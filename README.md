@@ -89,7 +89,10 @@ Database `kongkow_db` terdiri dari tabel-tabel yang saling berelasi:
 
 ## 👨‍💻 Author
 
-**Geral Tritama Wahyuady, Nugraha Adani, Ambar Triyasmin, Raika Maullana**
+**Geral Tritama Wahyuady (2410631170070)
+Nugraha Adani (2410631170098)
+Ambar Triyasmin (2410631170128)
+Raika Maulana (2410631170100) ** 
 * Universitas Singaperbangsa Karawang 
 * INFORMATIKA 
 
