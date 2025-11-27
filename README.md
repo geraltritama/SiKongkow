@@ -1,194 +1,100 @@
-☕ SiKongkow v1.0
+# ☕ SiKongkow v1.0
 
-Sistem Manajemen Kasir & Operasional Kafe Terintegrasi
+**Sistem Manajemen Kasir & Operasional Kafe Terintegrasi**
 
 <p align="center">
-<img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/NetBeans-1B6AC6%3Fstyle%3Dfor-the-badge%26logo%3Dapache-netbeans-ide%26logoColor%3Dwhite" />
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/JDBC-Success-success%3Fstyle%3Dfor-the-badge" />
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/NetBeans-1B6AC6?style=for-the-badge&logo=apache-netbeans-ide&logoColor=white" />
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+  <img src="https://img.shields.io/badge/JDBC-Success-success?style=for-the-badge" />
 </p>
 
-Aplikasi desktop berbasis Java Swing untuk efisiensi operasional "Waroeng Kongkow". Solusi all-in-one yang mencakup Point of Sales (POS), manajemen stok otomatis berbasis resep, absensi karyawan, dan sistem loyalitas pelanggan.
+> **Aplikasi desktop berbasis Java Swing untuk efisiensi operasional "Waroeng Kongkow", mencakup Point of Sales (POS), manajemen stok otomatis, dan loyalitas pelanggan.**
 
-📖 Tentang Aplikasi
+---
 
-SiKongkow dikembangkan sebagai solusi digital untuk menggantikan pencatatan manual yang rawan kesalahan. Aplikasi ini tidak hanya mencatat transaksi, tetapi juga memiliki logika bisnis cerdas yang menghubungkan penjualan dengan pengurangan stok gudang secara real-time (Resep Menu).
+## 📖 Tentang Aplikasi
 
-Dibangun dengan prinsip Pemrograman Berorientasi Objek (PBO/OOP) yang kuat, menjadikan kode lebih terstruktur, aman, dan mudah dikembangkan.
+**SiKongkow** dikembangkan untuk mengatasi masalah pencatatan manual pada operasional kafe. Aplikasi ini mengotomatisasi proses transaksi, perhitungan stok bahan baku berdasarkan resep menu, serta pencatatan absensi karyawan secara digital. Dibangun dengan konsep **Pemrograman Berorientasi Objek (PBO)** yang kuat untuk memastikan kode yang rapi dan mudah dikembangkan.
 
-✨ Fitur Unggulan
+---
 
-🛒 1. Point of Sales (Kasir Pintar)
+## ✨ Fitur Unggulan
 
-Katalog Menu Visual: Tampilan Grid 2 Kolom yang responsif, menampilkan gambar produk dan harga dengan rapi.
+### 🛒 Point of Sales (Kasir)
+* **Katalog Menu Visual:** Tampilan *Grid 2 Kolom* yang responsif dengan gambar produk.
+* **Keranjang Belanja:** Menambah, mengurangi, dan menghapus item pesanan secara *real-time*.
+* **Pencarian Cepat:** Filter menu berdasarkan kategori (Makanan, Minuman, Snack) atau pencarian nama.
+* **Kalkulasi Otomatis:** Menghitung Subtotal, Diskon, dan Total Bayar seketika.
 
-Keranjang Belanja Dinamis: Fitur tambah, kurang, dan hapus item pesanan secara instan tanpa reload.
+### 📦 Smart Inventory (Resep)
+* **Potong Stok Otomatis:** Tidak perlu update stok manual! Setiap menu yang terjual akan otomatis mengurangi stok bahan baku di gudang sesuai takaran resep.
+    * *Contoh:* Jual 1 "Nasi Goreng" -> Otomatis kurangi: Nasi (200gr), Telur (1 btr), Minyak (20ml).
 
-Pencarian Cepat (Live Search): Cari menu berdasarkan nama atau filter berdasarkan kategori (Makanan Berat, Snack, Bakaran, Minuman).
+### 👥 Sistem Member & Diskon
+* **Cek Member:** Identifikasi pelanggan via Nomor HP.
+* **Diskon Dinamis (Loyalty):**
+    * 🆕 **New Member:** 0% Diskon
+    * 🎖️ **Loyal Member:** 10% Diskon (> 5 kunjungan)
+    * 👑 **VIP Member:** 15% Diskon (> 10 kunjungan)
 
-Kalkulasi Otomatis: Menghitung Subtotal, Diskon Member, dan Total Bayar secara presisi.
+### 📅 Absensi Karyawan
+* Validasi ID Karyawan.
+* Pencatatan waktu kehadiran (*Check-in*) yang terhubung ke database.
 
-📦 2. Smart Inventory (Manajemen Stok Resep)
+---
 
-Potong Stok Otomatis: Fitur andalan! Setiap menu yang terjual akan otomatis mengurangi stok bahan baku di gudang sesuai takaran resep.
+## 🧠 Penerapan Konsep PBO (OOP)
 
-Logika: Jika terjual 1 porsi "Nasi Goreng", sistem otomatis mengurangi: Nasi (200gr), Telur (1 btr), dan Minyak (20ml) dari database bahan_baku.
+Proyek ini memenuhi kriteria Tugas Besar dengan menerapkan 4 pilar utama OOP:
 
-👥 3. Sistem Member & Loyalitas (Polimorfisme)
+| Konsep | Implementasi di SiKongkow |
+| :--- | :--- |
+| **Encapsulation** | Penggunaan *Access Modifier* `private` pada atribut kelas model (seperti `CartItem`, `User`) dan akses data melalui method `Getter/Setter`. |
+| **Inheritance** | Form GUI (`TransaksiPenjualan`, `AbsensiPanel`) mewarisi kelas `javax.swing.JFrame` atau `javax.swing.JPanel`. |
+| **Polymorphism** | Logika perhitungan diskon yang berbeda perilaku (Overriding) pada kelas `PembeliMember` dan `PembeliUmum`. |
+| **Abstraction** | Penggunaan `Abstract Class` atau Interface untuk kerangka dasar entitas bisnis pembeli. |
 
-Cek Member: Identifikasi pelanggan melalui Nomor HP.
+---
 
-Diskon Bertingkat: Sistem otomatis mendeteksi status member berdasarkan jumlah kunjungan (visit_count):
+## 🛠️ Teknologi
 
-🆕 New Member: Diskon 0% (0-5 Kunjungan)
+* **Bahasa:** Java (JDK 8/17+)
+* **GUI:** Java Swing (JFrame, JPanel, Layout Managers)
+* **Database:** MySQL
+* **IDE:** Apache NetBeans
+* **Library:** `mysql-connector-j` (JDBC Driver)
 
-🎖️ Loyal Member: Diskon 10% (> 5 Kunjungan)
+---
 
-👑 VIP Member: Diskon 15% (> 10 Kunjungan)
+## 🗄️ Struktur Database
 
-📅 4. Absensi Karyawan
+Database `kongkow_db` terdiri dari tabel-tabel yang saling berelasi:
 
-Validasi Cerdas: Input ID Karyawan -> Nama muncul otomatis.
+* **`users`**: Data login karyawan (Role: Admin/Kasir).
+* **`menu`**: Daftar produk jual.
+* **`bahan_baku`**: Stok gudang (Gram/Pcs/Ml).
+* **`resep_menu`**: *Junction Table* yang menghubungkan Menu dengan Bahan Baku (Resep).
+* **`pelanggan`**: Data member dan riwayat kunjungan (`visit_count`).
+* **`pesanan`**: Header transaksi (Total, Waktu, Diskon).
+* **`detail_pesanan`**: Rincian item per transaksi.
+* **`absensi`**: Log kehadiran karyawan.
 
-Cegah Duplikasi: Mencegah karyawan absen dua kali pada hari yang sama.
+---
 
-Riwayat: Menampilkan log kehadiran karyawan secara lengkap.
+## 👨‍💻 Author
 
-🧠 Penerapan Konsep PBO (OOP)
+**Geral Tritama Wahyuady, Nugraha Adani, Ambar Triyasmin, Raika Maullana**
+* Universitas Singaperbangsa Karawang 
+* INFORMATIKA 
 
-Proyek ini dirancang untuk memenuhi standar Tugas Besar PBO dengan menerapkan 4 pilar utama:
+---
 
-Konsep OOP
+*Dibuat untuk memenuhi Tugas Besar Mata Kuliah Pemrograman Berorientasi Objek.*
 
-Implementasi pada SiKongkow
+## 🚀 Cara Instalasi
 
-Encapsulation
+### 1. Clone Repository
+```bash
+git clone [https://github.com/username-anda/sikongkow.git](https://github.com/username-anda/sikongkow.git)
 
-Semua atribut pada kelas model (seperti CartItem, User) bersifat private dan hanya dapat diakses melalui method Getter dan Setter untuk melindungi integritas data.
-
-Inheritance
-
-Penggunaan pewarisan pada pembuatan GUI, di mana setiap Form (TransaksiPenjualan, AbsensiPanel) mewarisi sifat dari kelas induk javax.swing.JFrame atau javax.swing.JPanel.
-
-Polymorphism
-
-Diterapkan pada logika perhitungan diskon. Method hitungDiskon() memiliki perilaku berbeda tergantung apakah objeknya adalah PembeliMember atau PembeliUmum.
-
-Abstraction
-
-Penggunaan Abstract Class untuk mendefinisikan kerangka dasar entitas pembeli, menyembunyikan kompleksitas implementasi detail dari pengguna kelas.
-
-🛠️ Teknologi yang Digunakan
-
-Bahasa Pemrograman: Java (JDK 8 / 17+)
-
-Framework GUI: Java Swing (JFrame, JPanel, Layout Managers)
-
-Database: MySQL 8.0+
-
-IDE: Apache NetBeans
-
-Konektivitas: MySQL Connector/J (JDBC Driver)
-
-🗄️ Skema Database
-
-Database kongkow_db dirancang dengan relasi yang kuat (Foreign Key) untuk menjaga konsistensi data:
-
-users: Data akun login karyawan & pemilik.
-
-menu: Daftar produk yang dijual.
-
-bahan_baku: Gudang stok mentah.
-
-resep_menu: Junction Table (Many-to-Many) yang menghubungkan Menu ke Bahan Baku.
-
-pelanggan: Data member dan riwayat kunjungan.
-
-pesanan: Header transaksi (Total, Waktu, Diskon).
-
-detail_pesanan: Rincian item per transaksi.
-
-absensi: Log waktu kehadiran karyawan.
-
-🚀 Cara Instalasi & Menjalankan
-
-Ikuti langkah ini untuk mencoba aplikasi di komputer lokal Anda:
-
-1. Persiapan Database
-
-Pastikan XAMPP atau Laragon aktif (MySQL Server berjalan).
-
-Buka aplikasi phpMyAdmin atau HeidiSQL.
-
-Buat database baru dengan nama: kongkow_db.
-
-Import file SQL yang terdapat di folder database/ secara berurutan:
-
-1_master_data.sql (Struktur tabel & data dasar menu/bahan).
-
-2_data_resep.sql (Relasi resep menu).
-
-2. Konfigurasi Proyek
-
-Buka Apache NetBeans.
-
-Pilih menu File > Open Project dan arahkan ke folder SiKongkow.
-
-Pastikan Library MySQL JDBC Driver sudah terpasang di folder Libraries proyek.
-
-Jika menggunakan password database custom, sesuaikan file src/fitur/DbConnection.java.
-
-3. Jalankan Aplikasi
-
-Klik kanan pada file fitur.LoginPanel.java.
-
-Pilih Run File.
-
-Akun Demo:
-
-Username: admin
-
-Password: admin (atau sesuai data di tabel users)
-
-📸 Tangkapan Layar
-
-<details>
-<summary><b>Klik untuk melihat Screenshot Aplikasi</b></summary>
-
-Halaman Login
-
-Dashboard Utama
-
-
-
-
-
-Transaksi Penjualan
-
-Menu Absensi
-
-
-
-
-
-</details>
-
-👥 Tim Pengembang
-
-[NAMA ANDA]
-
-NIM: [NIM ANDA]
-
-Peran: Full Stack Java Developer & Database Designer
-
-Kampus: [NAMA UNIVERSITAS ANDA]
-
-<p align="center">
-<b>Dibuat untuk memenuhi Tugas Besar Mata Kuliah Pemrograman Berorientasi Objek.</b>
-
-
-
-
-Copyright © 2025 SiKongkow Project. All rights reserved.
-</p>
