@@ -42,6 +42,10 @@
 * Validasi ID Karyawan.
 * Pencatatan waktu kehadiran (*Check-in*) yang terhubung ke database.
 
+### 🧾 Tampilan Menu Utama
+<img width="1910" height="632" alt="image" src="https://github.com/user-attachments/assets/ab222887-1643-4f6a-8167-b975aa9da2ab" />
+<img width="1913" height="1002" alt="image" src="https://github.com/user-attachments/assets/8ce8be1a-67f8-4927-a267-83efcfc9176f" />
+
 ---
 
 ## 🧠 Penerapan Konsep PBO (OOP)
