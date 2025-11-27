@@ -82,19 +82,19 @@ Database `kongkow_db` terdiri dari tabel-tabel yang saling berelasi:
 
 ---
 
+## 👨‍💻 Author
+
+**Geral Tritama Wahyuady, Nugraha Adani, Ambar Triyasmin, Raika Maullana**
+* Universitas Singaperbangsa Karawang *
+* INFORMATIKA *
+
+---
+
+*Dibuat untuk memenuhi Tugas Besar Mata Kuliah Pemrograman Berorientasi Objek.*
+
 ## 🚀 Cara Instalasi
 
 ### 1. Clone Repository
 ```bash
 git clone [https://github.com/username-anda/sikongkow.git](https://github.com/username-anda/sikongkow.git)
 
-## 👨‍💻 Author
-
-**[Nama Anda]**
-* NIM: [NIM Anda]
-* Universitas: [Nama Kampus]
-* Jurusan: [Jurusan Anda]
-
----
-
-*Dibuat untuk memenuhi Tugas Besar Mata Kuliah Pemrograman Berorientasi Objek.*
