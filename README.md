@@ -45,6 +45,7 @@
 ### 🧾 Tampilan Menu Utama
 <img width="1910" height="632" alt="image" src="https://github.com/user-attachments/assets/ab222887-1643-4f6a-8167-b975aa9da2ab" />
 <img width="1913" height="1002" alt="image" src="https://github.com/user-attachments/assets/8ce8be1a-67f8-4927-a267-83efcfc9176f" />
+<img width="1906" height="586" alt="image" src="https://github.com/user-attachments/assets/98e8e9ba-9ef7-4f72-80de-80af6d6c0128" />
 
 ---
 
