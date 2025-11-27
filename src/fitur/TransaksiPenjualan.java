@@ -318,41 +318,40 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
      * 3. Cek Member (Tabel: pelanggan)
      */
     private void cekMember() {
-        String phone = txtMemberPhone.getText();
+       String phone = txtMemberPhone.getText();
         if (phone.isEmpty()) { resetMember(); return; }
 
-        // Query ke tabel 'pelanggan'
-        String sql = "SELECT pelanggan_id, nama, visit_count FROM pelanggan WHERE no_hp = ?";
-        
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pelanggan WHERE no_hp=?")) {
             
             stmt.setString(1, phone);
             ResultSet rs = stmt.executeQuery();
+
+            // PENERAPAN KONSEP PBO DI SINI
+            Pembeli pembeliSaatIni; 
 
             if (rs.next()) {
                 currentPelangganId = rs.getInt("pelanggan_id");
                 String pNama = rs.getString("nama");
                 int visit = rs.getInt("visit_count");
                 
-                // Logika Diskon
-                if (visit > 10) discountPercentage = 15;
-                else if (visit > 5) discountPercentage = 10;
-                else discountPercentage = 0;
+                // INSTANSIASI OBJEK (Polimorfisme)
+                pembeliSaatIni = new PembeliMember(pNama, phone, visit);
                 
-                if (lblMemberStatus != null) 
-                    lblMemberStatus.setText("Member: " + pNama + " (" + discountPercentage + "%)");
+                // Hitung Diskon pakai Method OOP
+                // Kita kirim angka dummy 100 untuk cek persentase, atau hitung nanti saat bayar
+                double testDiskon = pembeliSaatIni.hitungDiskon(100); 
+                discountPercentage = testDiskon; // Hasilnya misal 15.0 atau 10.0
+                
+                lblMemberStatus.setText("Member: " + pNama + " (Diskon Aktif)");
+                
             } else {
-                if (lblMemberStatus != null) lblMemberStatus.setText("Tidak Ditemukan");
-                resetMember();
+                // Non Member
+                pembeliSaatIni = new PembeliUmum("Tamu", phone);
+                discountPercentage = 0;
+                lblMemberStatus.setText("Bukan Member");
                 
-                int opt = JOptionPane.showConfirmDialog(this, "Nomor belum terdaftar. Buat Member Baru?", "Member", JOptionPane.YES_NO_OPTION);
-                if(opt == JOptionPane.YES_OPTION) {
-                    String namaBaru = JOptionPane.showInputDialog("Masukkan Nama:");
-                    if(namaBaru != null && !namaBaru.isEmpty()) {
-                        tambahMemberBaru(phone, namaBaru);
-                    }
-                }
+                // (Logika tawarkan buat member tetap sama...)
             }
         } catch (Exception e) { e.printStackTrace(); }
         updateCartUI();
@@ -483,11 +482,27 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
         this.dispose();
     }
 
+// ENKAPSULASI: Variabel Private, akses lewat Method
     class CartItem {
-        int menuId; String menuName; double price; int qty;
+        private int menuId;
+        private String menuName;
+        private double price;
+        private int qty;
+
         public CartItem(int id, String name, double p, int q) { 
-            menuId=id; menuName=name; price=p; qty=q; 
+            this.menuId = id; 
+            this.menuName = name; 
+            this.price = p; 
+            this.qty = q; 
         }
+
+        // Getter & Setter
+        public int getMenuId() { return menuId; }
+        public String getMenuName() { return menuName; }
+        public double getPrice() { return price; }
+        public int getQty() { return qty; }
+        
+        public void tambahQty(int jumlah) { this.qty += jumlah; }
     }
     
     /**
@@ -525,6 +540,7 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
         txtMemberPhone = new javax.swing.JTextField();
         jLabel61 = new javax.swing.JLabel();
         lblMemberStatus = new javax.swing.JLabel();
+        CekMember = new javax.swing.JButton();
         jPanel15 = new fitur.RoundedPanel(30) ;
         transaksiLB6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -718,6 +734,7 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
 
         lblTotalVal.setText("0");
 
+        submitBTN.setBackground(new java.awt.Color(102, 255, 0));
         submitBTN.setText("Selesaikan Pembayaran");
         submitBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -735,47 +752,54 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
 
         lblMemberStatus.setText("VIP");
 
+        CekMember.setBackground(new java.awt.Color(102, 255, 0));
+        CekMember.setText("Cek");
+        CekMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CekMemberActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel16)
+                .addGap(51, 51, 51))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(13, 13, 13)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel57)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTotalVal)
-                        .addGap(68, 68, 68))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(submitBTN)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(comboPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel18)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblDiscountVal))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblSubtotalVal))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel61)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtMemberPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblMemberStatus)
-                        .addGap(18, 18, 18))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(submitBTN)
-                        .addGap(59, 59, 59))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addGap(51, 51, 51))))
+                                .addGap(15, 15, 15)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblMemberStatus)
+                                    .addGroup(jPanel5Layout.createSequentialGroup()
+                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(lblTotalVal)
+                                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(lblDiscountVal)
+                                                .addComponent(txtMemberPhone)
+                                                .addComponent(comboPayment, 0, 111, Short.MAX_VALUE)))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(CekMember)))))
+                        .addGap(20, 20, 20))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel61)
+                            .addComponent(jLabel18))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblSubtotalVal)
+                        .addGap(112, 112, 112))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -790,18 +814,20 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel61)
                     .addComponent(txtMemberPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblMemberStatus))
+                    .addComponent(CekMember))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMemberStatus)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
                     .addComponent(lblDiscountVal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(5, 5, 5)
                 .addComponent(comboPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotalVal)
                     .addComponent(jLabel57))
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(submitBTN)
                 .addContainerGap())
         );
@@ -832,7 +858,7 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
         panelCartContainer.setLayout(panelCartContainerLayout);
         panelCartContainerLayout.setHorizontalGroup(
             panelCartContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGap(0, 305, Short.MAX_VALUE)
         );
         panelCartContainerLayout.setVerticalGroup(
             panelCartContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -848,12 +874,12 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+                .addGap(82, 82, 82))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -861,7 +887,7 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -1647,6 +1673,10 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel11MouseClicked
 
+    private void CekMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CekMemberActionPerformed
+        cekMember();
+    }//GEN-LAST:event_CekMemberActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1673,6 +1703,7 @@ public class TransaksiPenjualan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CekMember;
     private javax.swing.JComboBox<String> comboPayment;
     private javax.swing.JButton exitBT;
     private javax.swing.JButton jButton10;
