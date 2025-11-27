@@ -94,8 +94,7 @@ Database `kongkow_db` terdiri dari tabel-tabel yang saling berelasi:
 * **Ambar Triyasmin (2410631170128)**
 * **Raika Maulana (2410631170100)**
   
-* Universitas Singaperbangsa Karawang 
-* INFORMATIKA 
+**`Singaperbangsa University`**: **Informatics.**
 
 ---
 
